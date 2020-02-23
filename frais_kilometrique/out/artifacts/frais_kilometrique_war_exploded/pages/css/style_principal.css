@@ -1,0 +1,58 @@
+HEADER
+{
+    horiz-align: center;
+    size : auto;
+    color: white;
+    position: fixed;
+    height: 11%;
+    width: 105%;
+    background-color: rgb(49,41,95) ;
+    text-align: center;
+    top: 0px;
+    left: 0px;
+}
+#corp
+{
+    size: auto;
+    height: 76%;
+    width: 100%;
+    padding-top: 10%;
+    text-align: center;
+}
+#connect
+{
+    width: 30%;
+    margin: auto;
+    text-align: center;
+}
+#zone
+{
+    text-align: right;
+}
+span
+{
+    padding: 2%;
+}
+
+footer
+{
+    vertical-align: center;
+    position: fixed;
+    size : auto;
+    color: white;
+    height: 9%;
+    width: 105%;
+    background-color: rgb(49,41,95) ;
+    text-align: center;
+    bottom: 0px;
+    left: 0px;
+}
+#formulaire
+{
+    width: 40%;
+    margin: auto;
+    text-align: center;
+}
+input{
+    margin-bottom: 5px;
+}
