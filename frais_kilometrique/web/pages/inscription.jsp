@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <link rel="stylesheet" href="css/style_principal.css" type="text/css"/>
+    <link rel="stylesheet" href="pages/css/style_principal.css" type="text/css"/>
     <title>Inscription</title>
 </head>
 <body>
@@ -18,7 +18,7 @@
 <div id="corp">
     <section id="formulaire">
 
-        <form method="POST">
+        <form method="POST" action="process?action=register">
             <fieldset id="zone">
                 <legend>Informations</legend>
                 <label class="lab" id="lab_nom">Nom : </label>
@@ -57,6 +57,6 @@
 <footer>
 
 </footer>
-<script src="js/envoie_inscription.js"></script>
+<script src="pages/js/envoie_inscription.js"></script>
 </body>
 </html>

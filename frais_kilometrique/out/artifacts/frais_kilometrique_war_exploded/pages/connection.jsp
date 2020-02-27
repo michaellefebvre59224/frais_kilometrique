@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <link rel="stylesheet" href="css/style_principal.css" type="text/css"/>
+    <style type="text/css"> @import url(pages/css/style_principal.css);</style>
     <title>Connection</title>
 </head>
 <body>
@@ -18,7 +18,7 @@
 <div id="corp">
 <section id="connect">
 
-<form method="POST">
+<form method="POST" action="process?action=athenticate">
     <fieldset id="zone">
         <legend>Identifiant de connection</legend>
         <label class="lab" id="lab_mail">Identifiant : </label>
@@ -34,7 +34,7 @@
 </form>
 
 <p>
-    <span><a href="inscription.jsp">Inscription</a></span>
+    <span><a href="process?action=afficheInscription">Inscription</a></span>
     <span><a>Mot de passe oublié</a></span>
 </p>
 
