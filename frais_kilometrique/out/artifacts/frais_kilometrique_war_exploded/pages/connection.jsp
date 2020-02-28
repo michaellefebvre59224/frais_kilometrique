@@ -18,11 +18,11 @@
 <div id="corp">
 <section id="connect">
 
-<form method="POST" action="process?action=athenticate">
+<form method="POST" action="process?action=authenticate">
     <fieldset id="zone">
         <legend>Identifiant de connection</legend>
         <label class="lab" id="lab_mail">Identifiant : </label>
-        <input type="email" name="mail" class="input" id="input_mail" placeholder="adresse mail" maxlength="70">
+        <input type="email" name="email" class="input" id="input_mail" placeholder="adresse mail" maxlength="70">
         <br>
         <label class="lab" id="lab_pw">Mot de passe : </label>
         <input type="password" name="password" class="input" id="input_pw" placeholder="mot de passe" maxlength="30" >

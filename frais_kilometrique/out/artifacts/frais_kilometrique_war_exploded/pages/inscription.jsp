@@ -57,6 +57,6 @@
 <footer>
 
 </footer>
-<script src="js/envoie_inscription.js"></script>
+<script src="pages/js/envoie_inscription.js"></script>
 </body>
 </html>

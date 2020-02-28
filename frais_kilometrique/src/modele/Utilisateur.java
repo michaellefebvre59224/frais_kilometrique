@@ -11,8 +11,8 @@ public class Utilisateur {
     private String prenom;
     private String email;
     private String mdp;
-    private Fonction fonction;
-    private String adresse;
+    private String fonction;
+
 
     //--------------------------- G E T T E R   S E T T E R ----------------------------------------
     public int getId_utilisateur() {
@@ -51,42 +51,45 @@ public class Utilisateur {
         this.mdp = mdp;
     }
 
-    public Fonction getFonction() {
+    public String getFonction() {
         return fonction;
     }
 
-    public void setFonction(Fonction fonction) {
+    public void setFonction(String fonction) {
         this.fonction = fonction;
     }
 
-    public String getAdresse() {
-        return adresse;
-    }
-
-    public void setAdresse(String adresse) {
-        this.adresse = adresse;
-    }
 
     //------------------------- C O N S T R U C T E U R -----------------------------------------
 
-    public Utilisateur(int id_utilisateur, String nom, String prenom,
-                       String email, String mdp, Fonction fonction, String adresse) {
-        this.id_utilisateur = id_utilisateur;
+    public Utilisateur(String nom, String prenom,
+                       String email, String mdp, String fonction) {
         this.nom = nom;
         this.prenom = prenom;
         this.email = email;
         this.mdp = mdp;
         this.fonction = fonction;
-        this.adresse = adresse;
     }
 
-    public Utilisateur(int id_utilisateur, String nom, String prenom, String email, String mdp, Fonction fonction) {
+    public Utilisateur(int id_utilisateur, String nom, String prenom,
+                       String email, String mdp, String fonction) {
         this.id_utilisateur = id_utilisateur;
         this.nom = nom;
         this.prenom = prenom;
         this.email = email;
         this.mdp = mdp;
         this.fonction = fonction;
+    }
+
+    public Utilisateur(int id_utilisateur, String nom, String prenom, String email, String mdp) {
+        this.id_utilisateur = id_utilisateur;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.email = email;
+        this.mdp = mdp;
+    }
+
+    public Utilisateur() {
     }
 
     //------------------------------- T O S T R I N G -------------------------------------------
@@ -100,13 +103,12 @@ public class Utilisateur {
                 ", email='" + email + '\'' +
                 ", mdp='" + mdp + '\'' +
                 ", fonction=" + fonction +
-                ", adresse='" + (adresse==null?"pas d'adresse":adresse) + '\'' +
                 '}';
     }
 
     public static void main(String[] args) {
         Utilisateur u = new Utilisateur(1,"LEFEBVRE", "MICHAEL", "test@test.fr",
-                "azerty", ADMIN,null);
+                "azerty", "ADMIN");
         System.out.println(u);
     }
 }
