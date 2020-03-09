@@ -118,7 +118,8 @@ public class Adresse implements Serializable {
         this.setRegion(region);
     }
 
-    public Adresse(int id, int idUtilisateur, String numero, int codePostal, String typeRue, String nomRue, String pays, String ville, String region) {
+    public Adresse(int id, int idUtilisateur, String numero, int codePostal,
+                   String typeRue, String nomRue, String pays, String ville, String region) {
         this.setId(id);
         this.setIdUtilisateur(idUtilisateur);
         this.setNumero(numero);
@@ -142,6 +143,22 @@ public class Adresse implements Serializable {
         this.setVille(ville);
         this.setRegion(region);
         this.setCoordonnees(coordonnees);
+    }
+
+
+    public Adresse(int id, int idUtilisateur, int idTrajet, String numero, int codePostal,
+                   String typeRue, String nomRue, String pays, String ville, String region, String coordonnees) {
+        this.id = id;
+        this.idUtilisateur = idUtilisateur;
+        this.idTrajet = idTrajet;
+        this.numero = numero;
+        this.codePostal = codePostal;
+        this.typeRue = typeRue;
+        this.nomRue = nomRue;
+        this.pays = pays;
+        this.ville = ville;
+        this.region = region;
+        this.coordonnees = coordonnees;
     }
 
     public Adresse() {
