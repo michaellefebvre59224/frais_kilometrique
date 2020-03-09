@@ -9,12 +9,9 @@
 
 <html>
 <head>
-    <style type="text/css"> @import url(pages/css/style_principal.css);</style>
+    <style type="text/css"> @import url(pages/css/style_principal2.css);</style>
     <title>Ecran générale</title>
 </head>
-<HEADER>
-    <h1>FRAIS KILOMETRIQUE</h1>
-</HEADER>
 <body>
 <div id="corp">
     <nav id="menu">
@@ -24,10 +21,7 @@
     <div id="dix_trajet">
     </div>
 
-
 </div>
 </body>
-<footer>
 
-</footer>
 </html>

@@ -8,26 +8,28 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <style type="text/css"> @import url(pages/css/style_principal.css);</style>
+    <style type="text/css"> @import url(pages/css/style_principal2.css);</style>
     <title>Connection</title>
 </head>
 <body>
-<header>
+<!--<header>
 <h1>FRAIS KILOMETRIQUE</h1>
-</header>
-<div id="corp">
+</header>-->
+<div id="div_connect">
 <section id="connect">
 
 <form method="POST" action="process?action=authenticate">
     <fieldset id="zone">
-        <legend>Identifiant de connection</legend>
+        <legend></legend>
         <label class="lab" id="lab_mail">Identifiant : </label>
+        <br>
         <input type="email" name="email" class="input" id="input_mail" placeholder="adresse mail" maxlength="70">
         <br>
         <label class="lab" id="lab_pw">Mot de passe : </label>
+        <br>
         <input type="password" name="password" class="input" id="input_pw" placeholder="mot de passe" maxlength="30" >
     </fieldset>
-    <br>
+
 
     <input type="submit" class="input" id="input_connect" value="Connection">
 
@@ -41,8 +43,8 @@
 </section>
 </div>
 
-<footer>
+<!--<footer>
 
-</footer>
+</footer>-->
 </body>
 </html>

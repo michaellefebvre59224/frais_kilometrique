@@ -2,9 +2,10 @@ package modele;
 
 import org.apache.taglibs.standard.tei.Util;
 
-import static modele.Fonction.ADMIN;
+import java.io.Serializable;
 
-public class Utilisateur {
+
+public class Utilisateur implements Serializable {
     //-------------------- A T T R I B U T S   D ' I N S T A N C E ---------------------------------
     private int id_utilisateur;
     private String nom;
