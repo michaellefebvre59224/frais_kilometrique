@@ -78,6 +78,26 @@ public class FraisDAO implements Serializable {
                     " SET archive = False " +
                     " WHERE id_trajet = ?";
 
+    private String SQLInsertNewVehicule =
+            "INSERT  INTO VEHICULE " +
+                    " (marque, modele, puissance, immat, id_utilisateur) " +
+                    " VALUES (?, ?, ?, ?, ?)";
+
+    private String SQLFindVehiculeByIdUtilisateur =
+            "SELECT * FROM VEHICULE " +
+                    " WHERE id_utilisateur = ? " +
+                    " ORDER BY marque, modele, puissance";
+
+    private String SQLUpdateVehicule =
+            "UPDATE VEHICULE " +
+                    " SET marque=?, modele=?, puissance=?, immat=? " +
+                    " WHERE id_vehicule = ?";
+
+    private String SQLDeleteVehicule =
+            "DELETE FROM VEHICULE " +
+                    " WHERE id_vehicule = ?";
+
+    //CONNECTION BASE DE DONNEES
     private static String URL = "jdbc:mysql://localhost:3306/frais_kilo";
     private static String USER = "michael";
     private static String PW = "mdppopmichael";
@@ -548,6 +568,107 @@ public class FraisDAO implements Serializable {
             connection.commit();
 
         }catch (SQLException ex){
+            ex.printStackTrace();
+        }
+        return rsu;
+    }
+
+    //---------------------------------------- M E T H O D E  V E H I C U L E ------------------------------------------
+    public int insertNewVehicule(String marque, String modele,int puissance,String immat,int id_utilisateur) throws Exception {
+        if ( modele==null || puissance==0 || immat==null || id_utilisateur==0) return 0;
+
+        PreparedStatement insertStatement = null;
+        int rsu = 0;
+        connection.setAutoCommit(false);
+
+            try {
+            insertStatement = connection.prepareStatement(SQLInsertNewVehicule);
+            insertStatement.setString(1, marque.toUpperCase());
+            insertStatement.setString(2, modele.toUpperCase());
+            insertStatement.setInt(3, puissance);
+            insertStatement.setString(4, immat.toUpperCase());
+            insertStatement.setInt(5, id_utilisateur);
+
+            rsu = insertStatement.executeUpdate();
+
+            connection.commit();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return rsu;
+    }
+
+    public Set<Vehicule> findVehiculeByIdUtilisateur(int idUtilisateur) throws Exception{
+        if (idUtilisateur == 0) return null;
+        Set<Vehicule> vehicules= new HashSet<>();
+        PreparedStatement selectStatement = null;
+        ResultSet rs = null;
+
+        //Recherche dans la base de données
+        try{
+            selectStatement = connection.prepareStatement(SQLFindVehiculeByIdUtilisateur);
+            selectStatement.setInt(1,idUtilisateur);
+
+            rs = selectStatement.executeQuery();
+            while (rs.next()){
+                int idVehicule = rs.getInt("id_vehicule");
+                String marque = rs.getString("marque");
+                String modele = rs.getString("modele");
+                int puissance = rs.getInt("puissance");
+                String immat = rs.getString("immat");
+
+                Vehicule v = new Vehicule(idVehicule, marque, modele, puissance,immat, idUtilisateur);
+                vehicules.add(v);
+            }
+        }finally {
+            rs.close();
+            selectStatement.close();
+        }
+        return vehicules;
+    }
+
+    public int deleteVehicule(int idVehicule) throws Exception {
+        if ( idVehicule==0 ) return 0;
+
+        PreparedStatement insertStatement = null;
+        int rsu = 0;
+        connection.setAutoCommit(false);
+
+        try {
+            insertStatement = connection.prepareStatement(SQLDeleteVehicule);
+            insertStatement.setInt(1, idVehicule);
+
+            rsu = insertStatement.executeUpdate();
+
+            connection.commit();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return rsu;
+    }
+
+    public int updateVehicule(int idVehicule, String marque, String modele,int puissance,String immat) throws Exception {
+        if ( modele==null || puissance==0 || immat==null || idVehicule==0 ) return 0;
+
+        PreparedStatement insertStatement = null;
+        int rsu = 0;
+        connection.setAutoCommit(false);
+
+        try {
+            insertStatement = connection.prepareStatement(SQLUpdateVehicule);
+            insertStatement.setString(1, marque.toUpperCase());
+            insertStatement.setString(2, modele.toUpperCase());
+            insertStatement.setInt(3, puissance);
+            insertStatement.setString(4, immat.toUpperCase());
+            insertStatement.setInt(5, idVehicule);
+
+            rsu = insertStatement.executeUpdate();
+
+            connection.commit();
+
+        } catch (SQLException ex) {
             ex.printStackTrace();
         }
         return rsu;
