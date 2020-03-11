@@ -44,8 +44,8 @@ import java.lang.reflect.Array;
 
 public class Routing implements Serializable{
 
-    public String findCoordoneesAdresse (String numero, String typeRue, String nomRue,int codePostal, String ville, String pays, String region){
-        if (numero==null || typeRue==null || nomRue==null || codePostal==0 || ville==null || pays==null || region==null) return "ERREUR";
+    public String findCoordoneesAdresse (String numero, String typeRue, String nomRue,int codePostal, String ville, String pays){
+        if (numero==null || typeRue==null || nomRue==null || codePostal==0 || ville==null || pays==null) return "ERREUR";
 
         //remplacement des espace par %20
         numero = numero.replaceAll("\\s","%20");
@@ -53,9 +53,10 @@ public class Routing implements Serializable{
         typeRue = typeRue.replaceAll("\\s","%20");
         pays = pays.replaceAll("\\s","%20");
         ville = ville.replaceAll("\\s","%20");
-        region = region.replaceAll("\\s","%20");
 
-        String adresse = numero+"%20"+typeRue+"%20"+nomRue+"&country="+pays+"&postalcode="+codePostal+"&region="+region+"&locality="+ville;
+
+        String adresse = numero+"%20"+typeRue+"%20"+nomRue+"&country="+pays+"&postalcode="+codePostal+"&locality="+ville;
+        //String adresse = numero+"%20"+typeRue+"%20"+nomRue+"&country="+pays+"&postalcode="+codePostal+"&region="+region+"&locality="+ville;
 
         Client client = ClientBuilder.newClient();
         Response response = client.target("https://api.openrouteservice.org/geocode/search/structured?api_key=5b3ce3597851110001cf6248ac4ad383ccff42e5835fa4d27205c3f7&" +
@@ -97,8 +98,8 @@ public class Routing implements Serializable{
         return coordonnees;
     }
 
-    public int demandeDistanceTrajet(String coordonneesDepart, String coordonneesArrivee){
-        if (coordonneesDepart==null || coordonneesArrivee == null) return 0;
+    public Double demandeDistanceTrajet(String coordonneesDepart, String coordonneesArrivee){
+        if (coordonneesDepart==null || coordonneesArrivee == null) return 0.0d;
 
         //mise en forme du json pour les coordonnées du trajet
         String coordonnees = "{\"coordinates\":["+coordonneesDepart+","+coordonneesArrivee+"]}";
@@ -116,7 +117,7 @@ public class Routing implements Serializable{
         //recupération du status de la requète
         int status = response.getStatus();
 
-        if (status!=200)return 0;
+        if (status!=200)return 0.0d;
 
         //recupération du fichier Json de la reponse à la requete
         JSONObject reponse = new JSONObject(response.readEntity(String.class));
@@ -131,8 +132,8 @@ public class Routing implements Serializable{
         JSONObject summary = routesZero.optJSONObject("summary");
 
         //récuperation de la distance total
-        int distance = summary.getInt("distance");
-
+        Double distance = summary.getDouble("distance");
+        distance=distance/1000;
         return distance;
     }
 
@@ -141,10 +142,10 @@ public class Routing implements Serializable{
     public static void main(String[] args) {
         Routing r = new Routing();
 
-        String coordonneesDepart = r.findCoordoneesAdresse("1", "rue", "de thiant", 59224, "Monchaux sur écaillon", "FRANCE", "NORD");
-        String coordonneesArrivee = r.findCoordoneesAdresse("34", "rue", "la longue chasse", 59300, "Valenciennes", "FRANCE", "NORD");
+        String coordonneesDepart = r.findCoordoneesAdresse("1", "rue", "de thiant", 59224, "Monchaux sur écaillon", "FRANCE");
+        String coordonneesArrivee = r.findCoordoneesAdresse("34", "rue", "la longue chasse", 59300, "Valenciennes", "FRANCE");
 
-        int distance = r.demandeDistanceTrajet(coordonneesDepart,coordonneesArrivee);
+        Double distance = r.demandeDistanceTrajet(coordonneesDepart,coordonneesArrivee);
 
         System.out.println(distance);
 

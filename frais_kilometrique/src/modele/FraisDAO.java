@@ -30,21 +30,21 @@ public class FraisDAO implements Serializable {
 
     private String SQLInsertNewAdresseFavorite =
             "INSERT  INTO ADRESSE " +
-                    " (id_utilisateur, numero, type_rue, nom_rue, code_postal, ville, pays, region, coordonnees) " +
-                    " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    " (id_utilisateur, numero, type_rue, nom_rue, code_postal, ville, pays, coordonnees) " +
+                    " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
     private String SQLInsertNewAdresseTrajet =
             "INSERT  INTO ADRESSE " +
-                    " (numero, type_rue, nom_rue, code_postal, ville, pays, region, coordonnees) " +
-                    " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                    " (numero, type_rue, nom_rue, code_postal, ville, pays, coordonnees) " +
+                    " VALUES (?, ?, ?, ?, ?, ?, ?)";
 
     private String SQLFindAdresseFavoriteByIdUtilisateur =
-            "SELECT id_adresse, id_utilisateur, numero, type_rue, nom_rue, code_postal, ville, pays, region, coordonnees FROM ADRESSE " +
+            "SELECT id_adresse, id_utilisateur, numero, type_rue, nom_rue, code_postal, ville, pays, coordonnees FROM ADRESSE " +
                     " WHERE id_utilisateur = ? " +
                     "ORDER BY ville ,nom_rue , type_rue, numero";
 
     private String SQLFindAdresse =
-            "SELECT id_adresse, id_utilisateur, numero, type_rue, nom_rue, code_postal, ville, pays, region, coordonnees FROM ADRESSE " +
+            "SELECT id_adresse, id_utilisateur, numero, type_rue, nom_rue, code_postal, ville, pays, coordonnees FROM ADRESSE " +
                     " WHERE  (coordonnees = ? AND (id_utilisateur=? or id_utilisateur IS NULL)) " +
                     " ORDER BY ville ,nom_rue , type_rue, numero";
 
@@ -254,16 +254,16 @@ public class FraisDAO implements Serializable {
 
     //---------------------------------------- M E T H O D E  A D R E S S E --------------------------------------------
     public int insertAdresseFavorite(int id_utilisateur, String numero, String type_rue, String nom_rue, int code_postal,
-                                     String ville, String pays, String region) throws Exception {
+                                     String ville, String pays) throws Exception {
         if (id_utilisateur == 0 || numero == null || type_rue == null || nom_rue == null || code_postal == 0 ||
-                ville == null || pays == null || region == null) return 0;
+                ville == null || pays == null) return 0;
 
         PreparedStatement insertStatement = null;
         int rsu = 0;
         connection.setAutoCommit(false);
 
         Routing routing = new Routing();
-        String coordonnees = routing.findCoordoneesAdresse(numero, type_rue, nom_rue, code_postal, ville, pays, region);
+        String coordonnees = routing.findCoordoneesAdresse(numero, type_rue, nom_rue, code_postal, ville, pays);
 
         try {
             insertStatement = connection.prepareStatement(SQLInsertNewAdresseFavorite);
@@ -274,8 +274,7 @@ public class FraisDAO implements Serializable {
             insertStatement.setInt(5, code_postal);
             insertStatement.setString(6, ville.toUpperCase());
             insertStatement.setString(7, pays.toUpperCase());
-            insertStatement.setString(8, region.toUpperCase());
-            insertStatement.setString(9, coordonnees.toUpperCase());
+            insertStatement.setString(8, coordonnees.toUpperCase());
 
             rsu = insertStatement.executeUpdate();
 
@@ -288,16 +287,16 @@ public class FraisDAO implements Serializable {
     }
 
     public int insertAdresseTrajet(String numero, String type_rue, String nom_rue, int code_postal,
-                                     String ville, String pays, String region) throws Exception {
+                                     String ville, String pays) throws Exception {
         if (numero == null || type_rue == null || nom_rue == null || code_postal == 0 ||
-                ville == null || pays == null || region == null) return 0;
+                ville == null || pays == null) return 0;
 
         PreparedStatement insertStatement = null;
         int rsu = 0;
         connection.setAutoCommit(false);
 
         Routing routing = new Routing();
-        String coordonnees = routing.findCoordoneesAdresse(numero, type_rue, nom_rue, code_postal, ville, pays, region);
+        String coordonnees = routing.findCoordoneesAdresse(numero, type_rue, nom_rue, code_postal, ville, pays);
 
         try {
             insertStatement = connection.prepareStatement(SQLInsertNewAdresseTrajet);
@@ -307,8 +306,7 @@ public class FraisDAO implements Serializable {
             insertStatement.setInt(4, code_postal);
             insertStatement.setString(5, ville.toUpperCase());
             insertStatement.setString(6, pays.toUpperCase());
-            insertStatement.setString(7, region.toUpperCase());
-            insertStatement.setString(8, coordonnees.toUpperCase());
+            insertStatement.setString(7, coordonnees.toUpperCase());
 
             rsu = insertStatement.executeUpdate();
 
@@ -375,10 +373,10 @@ public class FraisDAO implements Serializable {
                 int codePostal = rs.getInt("code_postal");
                 String ville = rs.getString("ville");
                 String pays = rs.getString("pays");
-                String region = rs.getString("region");
+
                 String coordonees = rs.getString("coordonnees");
                 a = new Adresse(idAdresse, id_utilisateur, numero, codePostal, typeRue, nomRue, pays,
-                        ville, region, coordonees);
+                        ville, coordonees);
             }
         } finally {
             rs.close();
@@ -389,12 +387,12 @@ public class FraisDAO implements Serializable {
 
     public Adresse findAdresseOrCreate(String coordonnees,int idUtilisateur, String numero, String type_rue,
                                        String nom_rue, int code_postal,
-                                       String ville, String pays, String region) throws Exception {
+                                       String ville, String pays) throws Exception {
         FraisDAO f = new FraisDAO();
         Adresse a = null;
         a = f.findAdresseByIdUtilisateurBycoordonnees(coordonnees, idUtilisateur);
         if (a!=null) return a;
-        f.insertAdresseTrajet(numero, type_rue, nom_rue,code_postal,ville,pays,region);
+        f.insertAdresseTrajet(numero, type_rue, nom_rue,code_postal,ville,pays);
         a = f.findAdresseByIdUtilisateurBycoordonnees(coordonnees, idUtilisateur);
         return a;
     }
@@ -402,8 +400,67 @@ public class FraisDAO implements Serializable {
 
 
     //---------------------------------------- M E T H O D E  T R A J E T --------------------------------------------
+    public int createNewTrajetAndInsert(int idUtilisateur, String numeroAdDep, String numeroAdArr, String typeRueDep, String typeRueArr,
+                                        String nomRueDep, String nomRueArr, String codePostalDep, String codePostalArr,
+                                        String villeDep, String villeArr, String route, Date date ) throws Exception {
+        Routing r = new Routing();
+        FraisDAO f = new FraisDAO();
+        if (numeroAdDep==null || numeroAdArr==null || typeRueDep==null || typeRueArr==null || nomRueDep==null ||
+                nomRueArr==null || codePostalDep ==null || codePostalArr==null || villeDep==null || villeArr==null ||
+                route==null || date==null || idUtilisateur==0)return 100;
+        if (route.toUpperCase().equals("ALLER") || route.toUpperCase().equals("RETOUR")){
+
+        int codeDep = Integer.parseInt(codePostalDep);
+        int codeArr = Integer.parseInt(codePostalArr);
+        String coordonneedep = r.findCoordoneesAdresse(numeroAdDep, typeRueDep, nomRueDep, codeDep,
+                villeDep, "FRANCE");
+        String coordonneearr = r.findCoordoneesAdresse(numeroAdArr, typeRueArr, nomRueArr, codeArr,
+                villeArr, "FRANCE");
+        Double distance = (r.demandeDistanceTrajet(coordonneedep, coordonneearr));
+        Adresse adresseDepart = null;
+        Adresse adresseArrivee = null;
+        adresseDepart = f.findAdresseOrCreate(coordonneedep, idUtilisateur,numeroAdDep, typeRueDep, nomRueDep, codeDep,
+                villeDep, "FRANCE");
+        adresseArrivee = f.findAdresseOrCreate(coordonneearr, idUtilisateur,numeroAdArr, typeRueArr, nomRueArr, codeArr,
+                villeArr, "FRANCE");
+            System.out.println("if aller");
+            System.out.println(idUtilisateur);
+            System.out.println(date);
+            System.out.println(route);
+            System.out.println(adresseDepart.getId());
+            System.out.println(adresseArrivee.getId());
+            System.out.println(distance);
+        int traj = f.insertNewTrajet(idUtilisateur,date, route, adresseDepart.getId(), adresseArrivee.getId(), distance, false);
+        System.out.println(traj);
+
+        return traj;
+        }
+        else if (route.toUpperCase().equals("ALLER/RETOUR")){
+            int codeDep = Integer.parseInt(codePostalDep);
+            int codeArr = Integer.parseInt(codePostalArr);
+            String coordonneedep = r.findCoordoneesAdresse(numeroAdDep, typeRueDep, nomRueDep, codeDep,
+                    villeDep, "FRANCE");
+            String coordonneearr = r.findCoordoneesAdresse(numeroAdArr, typeRueArr, nomRueArr, codeArr,
+                    villeArr, "FRANCE");
+            Double distance1 = r.demandeDistanceTrajet(coordonneedep, coordonneearr);
+            Double distance2 = r.demandeDistanceTrajet(coordonneearr, coordonneedep);
+            Double distance = (distance1+distance2);
+            Adresse adresseDepart = null;
+            Adresse adresseArrivee = null;
+            adresseDepart = f.findAdresseOrCreate(coordonneedep, idUtilisateur,numeroAdDep, typeRueDep, nomRueDep, codeDep,
+                    villeDep, "FRANCE");
+            adresseArrivee = f.findAdresseOrCreate(coordonneearr, idUtilisateur,numeroAdArr, typeRueArr, nomRueArr, codeArr,
+                    villeArr, "FRANCE");
+            System.out.println("if aller/retour");
+            int traj = f.insertNewTrajet(idUtilisateur,date, route, adresseDepart.getId(), adresseArrivee.getId(), distance, false);
+            System.out.println(traj);
+
+            return traj;
+        }else return 200;
+    }
+
     public int insertNewTrajet(int id_utilisateur,Date date_trajet,String route,
-                               int id_adresse_dep,int id_adresse_arr,int distance,boolean archive) throws Exception{
+                               int id_adresse_dep,int id_adresse_arr,Double distance,boolean archive) throws Exception{
         if (id_utilisateur == 0 || date_trajet == null || route == null || id_adresse_dep == 0 || id_adresse_arr==0 ||
                 distance==0) return 0;
 
@@ -426,7 +483,7 @@ public class FraisDAO implements Serializable {
             insertStatement.setString(3,route.toUpperCase());
             insertStatement.setInt(4,id_adresse_dep);
             insertStatement.setInt(5,id_adresse_arr);
-            insertStatement.setInt(6,distance);
+            insertStatement.setDouble(6,distance);
             insertStatement.setBoolean(7,archive);
 
             rsu = insertStatement.executeUpdate();
@@ -458,7 +515,7 @@ public class FraisDAO implements Serializable {
                 String route = rs.getString("route");
                 int idAdresseDepart = rs.getInt("id_adresse_dep");
                 int idAdresseArrivee = rs.getInt("id_adresse_arr");
-                int distance = rs.getInt("distance");
+                Double distance = rs.getDouble("distance");
                 Boolean archive = rs.getBoolean("archive");
                 Trajet t = new Trajet(idTrajet, idUtilisateur, dateTrajet, route, idAdresseDepart, idAdresseArrivee,
                         distance, archive);
@@ -490,7 +547,7 @@ public class FraisDAO implements Serializable {
                 String route = rs.getString("route");
                 int idAdresseDepart = rs.getInt("id_adresse_dep");
                 int idAdresseArrivee = rs.getInt("id_adresse_arr");
-                int distance = rs.getInt("distance");
+                Double distance = rs.getDouble("distance");
                 Boolean archive = rs.getBoolean("archive");
                 Trajet t = new Trajet(idTrajet, idUtilisateur, dateTrajet, route, idAdresseDepart, idAdresseArrivee,
                         distance, archive);
@@ -522,7 +579,7 @@ public class FraisDAO implements Serializable {
                 String route = rs.getString("route");
                 int idAdresseDepart = rs.getInt("id_adresse_dep");
                 int idAdresseArrivee = rs.getInt("id_adresse_arr");
-                int distance = rs.getInt("distance");
+                Double distance = rs.getDouble("distance");
                 Boolean archive = rs.getBoolean("archive");
                 Trajet t = new Trajet(idTrajet, idUtilisateur, dateTrajet, route, idAdresseDepart, idAdresseArrivee,
                         distance, archive);
@@ -546,6 +603,8 @@ public class FraisDAO implements Serializable {
             insertStatement = connection.prepareStatement(SQLArchiveTrajetById);
             insertStatement.setInt(1,id_trajet);
 
+            insertStatement.executeUpdate();
+
             connection.commit();
 
         }catch (SQLException ex){
@@ -564,7 +623,7 @@ public class FraisDAO implements Serializable {
         try{
             insertStatement = connection.prepareStatement(SQLDesarchiveTrajetById);
             insertStatement.setInt(1,id_trajet);
-
+            insertStatement.executeUpdate();
             connection.commit();
 
         }catch (SQLException ex){
@@ -686,26 +745,11 @@ public class FraisDAO implements Serializable {
             System.out.println(a);
         }*/
         java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-        String coordonneedep = r.findCoordoneesAdresse("3", "rue", "de thiant", 59224,
-                "Monchaux sur ecaillon", "FRANCE", "Nord");
-        String coordonneearr = r.findCoordoneesAdresse("34", "rue", "de la longue chasse", 59300,
-                "Valenciennes", "FRANCE", "Nord");
-
-        int distance = r.demandeDistanceTrajet(coordonneedep, coordonneearr);
-        Adresse adresseDepart = null;
-        Adresse adresseArrivee = null;
-        adresseDepart = f.findAdresseOrCreate(coordonneedep, 1,"3", "rue",
-                "de thiant", 59224,"Monchaux sur ecaillon", "FRANCE", "Nord");
-        adresseArrivee = f.findAdresseOrCreate(coordonneearr, 1,"34", "rue",
-                "de la longue chasse", 59300, "Valenciennes", "FRANCE", "Nord");
-
-        System.out.println(adresseDepart.getId());
-        System.out.println(adresseArrivee.getId());
-        System.out.println(date);
-        System.out.println(distance);
-
-        int traj = f.insertNewTrajet(1,date, "ALLER", adresseDepart.getId(), adresseArrivee.getId(), distance, false);
-        System.out.println(traj);
+       int test = f.createNewTrajetAndInsert(2,"1","16","rue",
+               "rue","de thiant","pasteur", "59224",
+               "59224","Monchaux sur ecaillon", "monchaux sur ecaillon",
+               "ALLER/RETOUR", date);
+        System.out.println(test);
 
     }
 }

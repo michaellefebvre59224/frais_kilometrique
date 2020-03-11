@@ -11,7 +11,7 @@ public class Trajet implements Serializable {
     private String route;
     private int idAdresseDepart;
     private int idAdresseArrivee;
-    private int distance;
+    private Double distance;
     private boolean archive;
 
     //--------------------------------------- G E T T E R   S E T T E R ------------------------------------------------
@@ -63,11 +63,11 @@ public class Trajet implements Serializable {
         this.idAdresseArrivee = idAdresseArrivee;
     }
 
-    public int getDistance() {
+    public Double getDistance() {
         return distance;
     }
 
-    public void setDistance(int distance) {
+    public void setDistance(Double distance) {
         this.distance = distance;
     }
 
@@ -80,7 +80,7 @@ public class Trajet implements Serializable {
     }
 
     //------------------------------------------ C O N S T R U C T E U R -----------------------------------------------
-    public Trajet(int idTrajet, int idUtilisateur, Date dateTrajet, String route, int idAdresseDepart, int idAdresseArrivee, int distance, boolean archive) {
+    public Trajet(int idTrajet, int idUtilisateur, Date dateTrajet, String route, int idAdresseDepart, int idAdresseArrivee, Double distance, boolean archive) {
         this.idTrajet = idTrajet;
         this.idUtilisateur = idUtilisateur;
         this.dateTrajet = dateTrajet;
