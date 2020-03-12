@@ -23,18 +23,18 @@
 
         <form method="POST" action="process?action=archiveTrajet">
             <div id="list">
-        <table>
-            <tr><th>Date</th><th>type</th><th>distance</th><th>Selectionner</th><tr/>
-<c:forEach items="${trajetsUtilisateur}" var="trajet">
-    <tr>
-        <td>${trajet.dateTrajet}</td>
-        <td>${trajet.route}</td>
-        <td>${trajet.distance} Km</td>
-        <td><input  type="checkbox" name="choix" value="${trajet.idTrajet}" required/></td>
+                <table>
+                    <tr><th>Date</th><th>type</th><th>distance</th><th>Selectionner</th><tr/>
+                    <c:forEach items="${trajetsUtilisateur}" var="trajet">
+                        <tr>
+                            <td>${trajet.dateTrajet}</td>
+                            <td>${trajet.route}</td>
+                            <td>${trajet.distance} Km</td>
+                            <td><input  type="checkbox" name="choix" value="${trajet.idTrajet}"/></td>
 
-    </tr>
-</c:forEach>
-        </table>
+                        </tr>
+                    </c:forEach>
+                </table>
             </div>
             <input id="choix" type="submit" value="supprimer">
         </form>
@@ -85,12 +85,67 @@
         </form>
     </div>
     <div id="compte">
-
         <table>
             <tr><th>Nom</th><th>Prenom</th></tr>
-            <tr><td><input type="text" value="${utilisateur.nom}"/></td>
-                <td><input type="text" value="${utilisateur.prenom}"/></td></tr>
+            <form method="post" action="process?action=modifierNomPrenom">
+                <tr><td><input type="text" name="nom" value="${utilisateur.nom}"/></td>
+                    <td><input type="text" name="prenom" value="${utilisateur.prenom}"/></td>
+                    <td><input type="submit" class="input" id="input_update_nom" value="Modifier"></td>
+                </tr>
+            </form>
+            <tr><th>Mot de passe</th><th>Confirmation</th></tr>
+            <form  method="post" action="process?action=modifierPassword">
+                <tr><td><input type="text" name="password"/></td>
+                    <td><input type="text" name="passwordConf"/></td>
+                    <td><input type="submit" class="input" id="input_update" value="Modifier"></td>
+                </tr>
+            </form>
 
+            <tr><th>Véhicules :</th></tr>
+            <form method="post" action="process?action=modifierVehicule">
+                <tr>
+                    <td>Id</td>
+                    <td>Marque</td>
+                    <td>Modele</td>
+
+                </tr>
+                <c:forEach items="${vehiculesUtilisateur}" var="vehicule">
+                    <tr>
+                        <td><input type="text" name="idVehicule" value="${vehicule.idVehicule}"/></td>
+                        <td><input type="text" name="marque" value="${vehicule.marque}"/></td>
+                        <td><input type="text" name="modele" value="${vehicule.modele}"/></td>
+                    </tr>
+                </c:forEach>
+                <tr>
+                    <td>Puissance</td>
+                    <td>Immatriculation</td>
+                    <td>Suppirmer</td>
+                </tr>
+                <c:forEach items="${vehiculesUtilisateur}" var="vehicule">
+                    <tr>
+                        <td><input type="text" name="puissance" value="${vehicule.puissance}"/></td>
+                        <td><input type="text" name="immat" value="${vehicule.immat}"/></td>
+                        <td><input  type="checkbox" name="choix"/></td>
+                        <td><input  type="submit" name="modifierVehicule" value="Modifier"/></td>
+                    </tr>
+                </c:forEach>
+            </form>
+            <tr><th>Créer un véhicule</th></tr>
+            <form method="post" action="process?action=creerVehicule">
+                <tr>
+                    <td>Marque</td>
+                    <td>Modele</td>
+                    <td>Puissance</td>
+                    <td>Immatriculation</td>
+                </tr>
+                <tr>
+                    <td><input type="text" name="marque" value=""</td>
+                    <td><input type="text" name="modele" value=""/></td>
+                    <td><input type="text" name="puissance" value=""/></td>
+                    <td><input type="text" name="immat" value=""/></td>
+                    <td><input  type="submit" name="creerVehicule" value="Creer"/></td>
+                </tr>
+            </form>
         </table>
     </div>
     <div id="vehicule">

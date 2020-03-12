@@ -1,10 +1,9 @@
 package controle;
 
 import modele.*;
-import org.apache.commons.beanutils.converters.CalendarConverter;
-import org.apache.taglibs.standard.tei.Util;
+
 import org.mindrot.jbcrypt.BCrypt;
-import service.Routing;
+
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -61,12 +60,91 @@ public class ControlServlet extends HttpServlet {
                 case "archiveTrajet":
                     doArchiveTrajet(request, response);
                     break;
+                case "modifierNomPrenom":
+                    doUptdateNomPrenom(request, response);
+                    break;
+                case "modifierPassword":
+                    doUptdatePassword(request, response);
+                    break;
+                case "creerVehicule":
+                    doCreerVehicule(request, response);
+                    break;
+                case "modifierVehicule":
+                    doModifierVehicule(request, response);
+                    break;
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
 
+    private void doModifierVehicule(HttpServletRequest request, HttpServletResponse response) throws Exception{
+        FraisDAO dao = FraisDAO.getSingleton();
+        HttpSession session = request.getSession();
+        Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
+        String id= request.getParameter("idVehicule");
+        int idVehicule = Integer.parseInt(id);
+        String marque = request.getParameter("marque");
+        String modele = request.getParameter("modele");
+        String puis = request.getParameter("puissance");
+        int puissance = Integer.parseInt(puis);
+        String immat = request.getParameter("immat");
+        String choix = request.getParameter("choix");
 
+        if (choix.equals("on")){
+            int resultat = dao.deleteVehicule(idVehicule);
+            Set<Vehicule> vehiculesUtilisateur = dao.findVehiculeByIdUtilisateur(utilisateur.getId_utilisateur());
+            request.getSession().setAttribute("vehiculesUtilisateur", vehiculesUtilisateur);
+            String url = "pages/utilisateur_general.jsp";
+            forward(url, request, response);
+        }else {
+            int resultat = dao.updateVehicule(idVehicule, marque, modele, puissance, immat);
+            Set<Vehicule> vehiculesUtilisateur = dao.findVehiculeByIdUtilisateur(utilisateur.getId_utilisateur());
+            request.getSession().setAttribute("vehiculesUtilisateur", vehiculesUtilisateur);
+            String url = "pages/utilisateur_general.jsp";
+            forward(url, request, response);
+        }
+    }
+
+    private void doCreerVehicule(HttpServletRequest request, HttpServletResponse response) throws Exception{
+        FraisDAO dao = FraisDAO.getSingleton();
+        HttpSession session = request.getSession();
+        Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
+        String marque = request.getParameter("marque");
+        String modele = request.getParameter("modele");
+        String puis = request.getParameter("puissance");
+        int puissance = Integer.parseInt(puis);
+        String immat = request.getParameter("immat");
+        int resultat = dao.insertNewVehicule(marque,modele,puissance,immat,utilisateur.getId_utilisateur());
+        Set<Vehicule> vehiculesUtilisateur = dao.findVehiculeByIdUtilisateur(utilisateur.getId_utilisateur());
+        request.getSession().setAttribute("vehiculesUtilisateur", vehiculesUtilisateur);
+        String url = "pages/utilisateur_general.jsp";
+        forward(url, request, response);
+    }
+
+    private void doUptdatePassword(HttpServletRequest request, HttpServletResponse response) throws Exception{
+        FraisDAO dao = FraisDAO.getSingleton();
+        HttpSession session = request.getSession();
+        Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
+        String password = request.getParameter("password");
+        String passwordConf = request.getParameter("passwordConf");
+        int resultat = dao.updatePassword(password,passwordConf,utilisateur.getId_utilisateur());
+        String url = "pages/utilisateur_general.jsp";
+        forward(url, request, response);
+    }
+
+    private void doUptdateNomPrenom(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        FraisDAO dao = FraisDAO.getSingleton();
+        HttpSession session = request.getSession();
+        Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
+        String nom = request.getParameter("nom");
+        String prenom = request.getParameter("prenom");
+        utilisateur.setNom(nom);
+        utilisateur.setPrenom(prenom);
+        request.getSession().setAttribute("utilisateur", utilisateur);
+        int resultat = dao.updateUtilisateurNomPrenom(utilisateur.getId_utilisateur(), nom,prenom);
+        String url = "pages/utilisateur_general.jsp";
+        forward(url, request, response);
     }
 
     private void doArchiveTrajet(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -204,16 +282,16 @@ public class ControlServlet extends HttpServlet {
     }
 
     private void doAfficheInscription (HttpServletRequest request, HttpServletResponse response) throws
-                ServletException, IOException {
-                    String url = "pages/inscription.jsp";
-                    forward(url, request, response);
+            ServletException, IOException {
+        String url = "pages/inscription.jsp";
+        forward(url, request, response);
     }
 
     private void doInit (HttpServletRequest request, HttpServletResponse response) throws
-                ServletException, IOException {
+            ServletException, IOException {
 
-                    String url = "pages/connection.jsp";
-                    forward(url, request, response);
+        String url = "pages/connection.jsp";
+        forward(url, request, response);
     }
 
 }

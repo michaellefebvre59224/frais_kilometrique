@@ -19,19 +19,19 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" scope="PROVIDED" name="Tomcat 9.0.311" level="application_server_libraries" />
     <orderEntry type="library" name="jstl-api-1.2" level="project" />
     <orderEntry type="library" name="mysql-connector-java-5.1.6-bin" level="project" />
     <orderEntry type="library" name="jBCrypt-0.4.1" level="project" />
     <orderEntry type="library" name="API ORS V2" level="project" />
-    <orderEntry type="library" name="javax:javaee-web-api:8.0.1" level="project" />
-    <orderEntry type="library" name="org.glassfish.jersey.inject:jersey-hk2:2.30.1" level="project" />
     <orderEntry type="library" name="org.glassfish.jersey.core:jersey-client:2.30.1" level="project" />
     <orderEntry type="library" name="javax.xml.bind:jaxb-api:2.3.1" level="project" />
-    <orderEntry type="library" name="javax.json:javax.json-api:1.1.4" level="project" />
     <orderEntry type="library" name="org.json:json:20140107" level="project" />
     <orderEntry type="library" name="org.kohsuke.stapler:json-lib:2.1-rev4" level="project" />
     <orderEntry type="library" name="org.kordamp.ezmorph:ezmorph-core:3.0.0" level="project" />
     <orderEntry type="library" name="org.slf4j:jul-to-slf4j:1.7.12" level="project" />
+    <orderEntry type="library" name="org.glassfish.jersey.inject:jersey-hk2:2.30.1" level="project" />
+    <orderEntry type="library" name="javax.json:javax.json-api:1.1.4" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Tomcat 9.0.31" level="application_server_libraries" />
+    <orderEntry type="library" name="javax:javaee-api:8.0.1" level="project" />
   </component>
 </module>

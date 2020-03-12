@@ -28,6 +28,16 @@ public class FraisDAO implements Serializable {
                     " (nom, prenom, email, mdp) " +
                     " VALUES (?, ?, ?, ?)";
 
+    private String SQLUpdateUtilisateurNomPrenom =
+            "UPDATE UTILISATEUR " +
+                    " SET nom=?, prenom=?" +
+                    " WHERE id_utilisateur = ?";
+
+    private String SQLUpdatePassword =
+            "UPDATE UTILISATEUR " +
+                    " SET mdp=?" +
+                    " WHERE id_utilisateur = ?";
+
     private String SQLInsertNewAdresseFavorite =
             "INSERT  INTO ADRESSE " +
                     " (id_utilisateur, numero, type_rue, nom_rue, code_postal, ville, pays, coordonnees) " +
@@ -168,6 +178,56 @@ public class FraisDAO implements Serializable {
         return utilisateur;
     }
 
+    public int updatePassword(String password, String passwordConf, int idUtilisateur) throws Exception {
+        if (password==null || passwordConf==null ) return 0;
+//cryptage avec jbcrypt
+
+        if (password.equals(passwordConf)) {
+            String pass = BCrypt.hashpw(password, BCrypt.gensalt(15));
+            PreparedStatement insertStatement = null;
+            int rsu = 0;
+            connection.setAutoCommit(false);
+
+            try {
+                insertStatement = connection.prepareStatement(SQLUpdatePassword);
+                insertStatement.setString(1, pass);
+                insertStatement.setInt(2, idUtilisateur);
+
+                rsu = insertStatement.executeUpdate();
+
+                connection.commit();
+
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            return rsu;
+        }else {
+            return 0;
+        }
+    }
+    public int updateUtilisateurNomPrenom(int idUtilisateur, String nom, String prenom) throws Exception {
+        if (prenom==null || nom==null || idUtilisateur==0 ) return 0;
+
+        PreparedStatement insertStatement = null;
+        int rsu = 0;
+        connection.setAutoCommit(false);
+
+        try {
+            insertStatement = connection.prepareStatement(SQLUpdateUtilisateurNomPrenom);
+            insertStatement.setString(1, nom.toUpperCase());
+            insertStatement.setString(2,prenom.toUpperCase());
+            insertStatement.setInt(3, idUtilisateur);
+
+            rsu = insertStatement.executeUpdate();
+
+            connection.commit();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return rsu;
+    }
+
     public Utilisateur findByEmail(String email) throws Exception {
         if (email == null) return null;
         Utilisateur utilisateur = null;
@@ -287,7 +347,7 @@ public class FraisDAO implements Serializable {
     }
 
     public int insertAdresseTrajet(String numero, String type_rue, String nom_rue, int code_postal,
-                                     String ville, String pays) throws Exception {
+                                   String ville, String pays) throws Exception {
         if (numero == null || type_rue == null || nom_rue == null || code_postal == 0 ||
                 ville == null || pays == null) return 0;
 
@@ -410,19 +470,19 @@ public class FraisDAO implements Serializable {
                 route==null || date==null || idUtilisateur==0)return 100;
         if (route.toUpperCase().equals("ALLER") || route.toUpperCase().equals("RETOUR")){
 
-        int codeDep = Integer.parseInt(codePostalDep);
-        int codeArr = Integer.parseInt(codePostalArr);
-        String coordonneedep = r.findCoordoneesAdresse(numeroAdDep, typeRueDep, nomRueDep, codeDep,
-                villeDep, "FRANCE");
-        String coordonneearr = r.findCoordoneesAdresse(numeroAdArr, typeRueArr, nomRueArr, codeArr,
-                villeArr, "FRANCE");
-        Double distance = (r.demandeDistanceTrajet(coordonneedep, coordonneearr));
-        Adresse adresseDepart = null;
-        Adresse adresseArrivee = null;
-        adresseDepart = f.findAdresseOrCreate(coordonneedep, idUtilisateur,numeroAdDep, typeRueDep, nomRueDep, codeDep,
-                villeDep, "FRANCE");
-        adresseArrivee = f.findAdresseOrCreate(coordonneearr, idUtilisateur,numeroAdArr, typeRueArr, nomRueArr, codeArr,
-                villeArr, "FRANCE");
+            int codeDep = Integer.parseInt(codePostalDep);
+            int codeArr = Integer.parseInt(codePostalArr);
+            String coordonneedep = r.findCoordoneesAdresse(numeroAdDep, typeRueDep, nomRueDep, codeDep,
+                    villeDep, "FRANCE");
+            String coordonneearr = r.findCoordoneesAdresse(numeroAdArr, typeRueArr, nomRueArr, codeArr,
+                    villeArr, "FRANCE");
+            Double distance = (r.demandeDistanceTrajet(coordonneedep, coordonneearr));
+            Adresse adresseDepart = null;
+            Adresse adresseArrivee = null;
+            adresseDepart = f.findAdresseOrCreate(coordonneedep, idUtilisateur,numeroAdDep, typeRueDep, nomRueDep, codeDep,
+                    villeDep, "FRANCE");
+            adresseArrivee = f.findAdresseOrCreate(coordonneearr, idUtilisateur,numeroAdArr, typeRueArr, nomRueArr, codeArr,
+                    villeArr, "FRANCE");
             System.out.println("if aller");
             System.out.println(idUtilisateur);
             System.out.println(date);
@@ -430,10 +490,10 @@ public class FraisDAO implements Serializable {
             System.out.println(adresseDepart.getId());
             System.out.println(adresseArrivee.getId());
             System.out.println(distance);
-        int traj = f.insertNewTrajet(idUtilisateur,date, route, adresseDepart.getId(), adresseArrivee.getId(), distance, false);
-        System.out.println(traj);
+            int traj = f.insertNewTrajet(idUtilisateur,date, route, adresseDepart.getId(), adresseArrivee.getId(), distance, false);
+            System.out.println(traj);
 
-        return traj;
+            return traj;
         }
         else if (route.toUpperCase().equals("ALLER/RETOUR")){
             int codeDep = Integer.parseInt(codePostalDep);
@@ -640,7 +700,7 @@ public class FraisDAO implements Serializable {
         int rsu = 0;
         connection.setAutoCommit(false);
 
-            try {
+        try {
             insertStatement = connection.prepareStatement(SQLInsertNewVehicule);
             insertStatement.setString(1, marque.toUpperCase());
             insertStatement.setString(2, modele.toUpperCase());
@@ -745,11 +805,11 @@ public class FraisDAO implements Serializable {
             System.out.println(a);
         }*/
         java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-       int test = f.createNewTrajetAndInsert(2,"1","16","rue",
-               "rue","de thiant","pasteur", "59224",
-               "59224","Monchaux sur ecaillon", "monchaux sur ecaillon",
-               "ALLER/RETOUR", date);
+        int test = f.createNewTrajetAndInsert(2,"1","16","rue",
+                "rue","de thiant","pasteur", "59224",
+                "59224","Monchaux sur ecaillon", "monchaux sur ecaillon",
+                "ALLER/RETOUR", date);
         System.out.println(test);
-
+        //f.updatePassword("Test123456","Test123456", 2);
     }
 }

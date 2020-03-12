@@ -30,17 +30,13 @@ import org.json.*;
 
 
 
-import javax.json.*;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-import javax.json.stream.JsonParser;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.MediaType;
 import java.io.*;
-import java.lang.reflect.Array;
+
 
 public class Routing implements Serializable{
 
@@ -60,8 +56,8 @@ public class Routing implements Serializable{
 
         Client client = ClientBuilder.newClient();
         Response response = client.target("https://api.openrouteservice.org/geocode/search/structured?api_key=5b3ce3597851110001cf6248ac4ad383ccff42e5835fa4d27205c3f7&" +
-                "address="+adresse)
-                .request(MediaType.TEXT_PLAIN_TYPE)
+                "address="+adresse).request(MediaType.TEXT_PLAIN_TYPE)
+                //.request(MediaType.TEXT_PLAIN_TYPE)
                 .header("Accept", "application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8")
                 .get();
 
