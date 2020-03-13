@@ -43,6 +43,16 @@ public class Routing implements Serializable{
     public String findCoordoneesAdresse (String numero, String typeRue, String nomRue,int codePostal, String ville, String pays){
         if (numero==null || typeRue==null || nomRue==null || codePostal==0 || ville==null || pays==null) return "ERREUR";
 
+        System.out.println("-------------------------------------find adresse--------------------------------------------");
+        System.out.println("creer et inserer : " + numero);
+        System.out.println("doajouttrajet : " + typeRue);
+        System.out.println("doajouttrajet : " + nomRue);
+        System.out.println("doajouttrajet : " + codePostal);
+        System.out.println("doajouttrajet : " + ville);
+        System.out.println("doajouttrajet : " + pays);
+
+
+
         //remplacement des espace par %20
         numero = numero.replaceAll("\\s","%20");
         nomRue = nomRue.replaceAll("\\s","%20");
@@ -57,7 +67,6 @@ public class Routing implements Serializable{
         Client client = ClientBuilder.newClient();
         Response response = client.target("https://api.openrouteservice.org/geocode/search/structured?api_key=5b3ce3597851110001cf6248ac4ad383ccff42e5835fa4d27205c3f7&" +
                 "address="+adresse).request(MediaType.TEXT_PLAIN_TYPE)
-                //.request(MediaType.TEXT_PLAIN_TYPE)
                 .header("Accept", "application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8")
                 .get();
 
@@ -97,8 +106,11 @@ public class Routing implements Serializable{
     public Double demandeDistanceTrajet(String coordonneesDepart, String coordonneesArrivee){
         if (coordonneesDepart==null || coordonneesArrivee == null) return 0.0d;
 
+
+
         //mise en forme du json pour les coordonnées du trajet
         String coordonnees = "{\"coordinates\":["+coordonneesDepart+","+coordonneesArrivee+"]}";
+
 
         Client client = ClientBuilder.newClient();
         Entity<String> payload = Entity.json(coordonnees);

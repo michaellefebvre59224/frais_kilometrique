@@ -182,13 +182,17 @@ public class ControlServlet extends HttpServlet {
         java.util.Date dateU = format.parse(dateString);
         java.sql.Date date = new java.sql.Date(dateU.getTime());
 
+
         FraisDAO dao = FraisDAO.getSingleton();
 
         int retourInsertion = dao.createNewTrajetAndInsert(utilisateur.getId_utilisateur(), numeroAdDep,numeroAdArr,
                 typeRueDep,typeRueArr,nomRueDep, nomRueArr,codePostalDep,codePostalArr,villeDep, villeArr, route, date);
+
         Set<Trajet> trajetsUtilisateur = dao.findTrajetNonArchiveByUtilisateur(utilisateur.getId_utilisateur());
+
         request.getSession().setAttribute("trajetsUtilisateur", trajetsUtilisateur);
-        System.out.println(retourInsertion);
+
+        
         String url = "pages/utilisateur_general.jsp";
         forward(url, request, response);
     }

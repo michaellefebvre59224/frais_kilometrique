@@ -71,6 +71,11 @@
     width: 100px;
     font-size: 10px;
 }
+#trajet table input{
+    height: 28px;
+    width: 100px;
+    font-size: 10px;
+}
 #trajet {
     font-size: 10px;
     text-align: left;
@@ -104,98 +109,34 @@ span
     padding: 2%;
 }
 
-input{
-    margin-bottom: 5px;
-}
-
 body{
     background-color: white;
     text-align: center;
 }
-
-nav{
-    text-align: right;
-
-}
-
-nav a{
-    margin: 20px;
-    display: block;
-    text-decoration: none;
-    color: black;
-}
-
-nav a:hover{
-    display: block;
-    text-decoration: none;
-    color: black;
-}
-
-fieldset{
-    margin: 10px;
-    border: none;
+table{
+    border-spacing: 0px;
 }
 th{
     font-size: 12px;
     text-align: center;
-    width: 60px;
-    height: 20px;
+    width: 50px;
+    height: 15px;
+    border: 1px;
 }
 td{
     font-size: 10px;
     text-align: left;
-    width: 60px;
-    height: 20px;
-}
-#numero_ad_dep{
     width: 50px;
-    height: 22px;
+    height: 15px;
+    border: 1px;
 }
-#type_rue_dep{
-    width: 100px;
-    height: 22px;
-}
-#nom_rue_dep{
-    width: 100px;
-    height: 22px;
-}
-#code_postal_dep{
-    width: 50px;
-    height: 22px;
-}
-#ville_dep{
-    width: 100px;
-    height: 22px;
-}
-#numero_ad_arr{
-    width: 50px;
-    height: 22px;
-}
-#type_rue_arr{
-    width: 100px;
-    height: 22px;
-}
-#nom_rue_arr{
-    width: 100px;
-    height: 22px;
-}
-#code_postal_arr{
-    width: 50px;
-    height: 22px;
-}
-#ville_arr{
-    width: 100px;
-    height: 22px;
-}
+
 #date {
     display: block;
     font: 1rem 'Fira Sans', sans-serif;
     font-size: 12px;
 }
-input,
-label {
-    margin: .4rem 0;
-}
+
 #start{
     width: 130px;
     height: 25px;

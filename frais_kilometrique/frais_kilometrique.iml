@@ -20,7 +20,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="jstl-api-1.2" level="project" />
-    <orderEntry type="library" name="mysql-connector-java-5.1.6-bin" level="project" />
     <orderEntry type="library" name="jBCrypt-0.4.1" level="project" />
     <orderEntry type="library" name="API ORS V2" level="project" />
     <orderEntry type="library" name="org.glassfish.jersey.core:jersey-client:2.30.1" level="project" />
@@ -33,5 +32,11 @@
     <orderEntry type="library" name="javax.json:javax.json-api:1.1.4" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Tomcat 9.0.31" level="application_server_libraries" />
     <orderEntry type="library" name="javax:javaee-api:8.0.1" level="project" />
+    <orderEntry type="library" name="javax.activation:activation:1.1.1" level="project" />
+    <orderEntry type="library" name="activation-1.1.1" level="project" />
+    <orderEntry type="library" name="jaxb-api-2.3.1" level="project" />
+    <orderEntry type="library" name="jersey-client-2.30.1" level="project" />
+    <orderEntry type="library" name="jersey-hk2-2.30.1" level="project" />
+    <orderEntry type="library" name="mysql-connector-java-8.0.19" level="project" />
   </component>
 </module>

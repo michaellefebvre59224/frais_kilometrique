@@ -264,8 +264,8 @@ public class FraisDAO implements Serializable {
                 utilisateur = new Utilisateur(id, nom, prenom, email, password, fonction);
             }
         } finally {
-            rs.close();
-            selectStatement.close();
+            if (rs!=null)rs.close();
+            if (selectStatement!=null)selectStatement.close();
         }
         return utilisateur;
     }
@@ -468,6 +468,22 @@ public class FraisDAO implements Serializable {
         if (numeroAdDep==null || numeroAdArr==null || typeRueDep==null || typeRueArr==null || nomRueDep==null ||
                 nomRueArr==null || codePostalDep ==null || codePostalArr==null || villeDep==null || villeArr==null ||
                 route==null || date==null || idUtilisateur==0)return 100;
+
+        System.out.println("-------------------------------------creer et insert--------------------------------------------");
+        System.out.println("creer et inserer : " + numeroAdArr);
+        System.out.println("doajouttrajet : " + numeroAdDep);
+        System.out.println("doajouttrajet : " + typeRueArr);
+        System.out.println("doajouttrajet : " + typeRueDep);
+        System.out.println("doajouttrajet : " + nomRueArr);
+        System.out.println("doajouttrajet : " + nomRueDep);
+        System.out.println("doajouttrajet : " + codePostalArr);
+        System.out.println("doajouttrajet : " + codePostalDep);
+        System.out.println("doajouttrajet : " + villeArr);
+        System.out.println("doajouttrajet : " + villeDep);
+        System.out.println("doajouttrajet : " + date);
+        System.out.println("doajouttrajet : " + route);
+        System.out.println("doajouttrajet : " + idUtilisateur);
+
         if (route.toUpperCase().equals("ALLER") || route.toUpperCase().equals("RETOUR")){
 
             int codeDep = Integer.parseInt(codePostalDep);

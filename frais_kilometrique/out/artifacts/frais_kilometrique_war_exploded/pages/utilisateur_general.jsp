@@ -40,48 +40,70 @@
         </form>
 
         <form method="POST" action="process?action=ajoutTrajet">
-            <fieldset>
-                <legend>Adresse depart</legend>
-                <label>Numero : </label>
-                <input id="numero_ad_dep" type="text" name="numero_ad_dep" height="18px" width="20"  maxlength="5" required>
-                <label>Type de rue : </label>
-                <input id="type_rue_dep" type="text" name="type_rue_dep" height="18px" width="20"   maxlength="25" required>
-                <label>Nom de rue : </label>
-                <input id="nom_rue_dep" type="text" name="nom_rue_dep" height="18px" width="40"  maxlength="70" required>
-                <br/>
-                <label>Code postal : </label>
-                <input id="code_postal_dep" type="text" name="code_postal_dep" height="18px" width="20"   maxlength="5" required>
-                <label>Ville : </label>
-                <input id="ville_dep" type="text" name="ville_dep" height="18px" width="40"  maxlength="25" required>
-            </fieldset>
-            <fieldset>
-                <legend>Adresse arrive</legend>
-                <label>Numero : </label>
-                <input id="numero_ad_arr" type="text" name="numero_ad_arr" height="18px" width="20"  maxlength="5" required>
-                <label>Type de rue : </label>
-                <input id="type_rue_arr" type="text" name="type_rue_arr" height="18px" width="20"   maxlength="25" required>
-                <label>Nom de rue : </label>
-                <input id="nom_rue_arr" type="text" name="nom_rue_arr" height="18px" width="40"  maxlength="70" required>
-                <br/>
-                <label>Code postal : </label>
-                <input id="code_postal_arr" type="text" name="code_postal_arr" height="18px" width="20"   maxlength="5" required>
-                <label>Ville : </label>
-                <input id="ville_arr" type="text" name="ville_arr" height="18px" width="40"  maxlength="25" required>
-            </fieldset>
-            <label for="start" id="date">Date du trajet:</label>
-
+            <table>
+                <tr><th>Numero : </th><th>Type de rue : </th><th>Nom de rue : </th></tr>
+                <tr>
+                    <td>
+                        <input id="numero_ad_dep" type="text" name="numero_ad_dep" height="18px" width="20"  maxlength="5" required>
+                    </td>
+                    <td>
+                        <input id="type_rue_dep" type="text" name="type_rue_dep" height="18px" width="20"   maxlength="25" required>
+                    </td>
+                    <td>
+                        <input id="nom_rue_dep" type="text" name="nom_rue_dep" height="18px" width="40"  maxlength="70" required>
+                    </td>
+                </tr>
+                <tr><th>Code postal : </th><th>Ville : </th></tr>
+                <tr>
+                    <td>
+                        <input id="code_postal_dep" type="text" name="code_postal_dep" height="18px" width="20"   maxlength="5" required>
+                    </td>
+                    <td>
+                        <input id="ville_dep" type="text" name="ville_dep" height="18px" width="40"  maxlength="25" required>
+                    </td>
+                </tr>
+                <tr><th>Numero : </th><th>Type de rue : </th><th>Nom de rue : </th></tr>
+                <tr>
+                    <td>
+                        <input id="numero_ad_arr" type="text" name="numero_ad_arr" height="18px" width="20"  maxlength="5" required>
+                    </td>
+                    <td>
+                        <input id="type_rue_arr" type="text" name="type_rue_arr" height="18px" width="20"   maxlength="25" required>
+                    </td>
+                    <td>
+                        <input id="nom_rue_arr" type="text" name="nom_rue_arr" height="18px" width="40"  maxlength="70" required>
+                    </td>
+                </tr>
+                <tr><th>Code postal : </th><th>Ville : </th></tr>
+                <tr>
+                    <td>
+                        <input id="code_postal_arr" type="text" name="code_postal_arr" height="18px" width="20"   maxlength="5" required>
+                    </td>
+                    <td>
+                        <input id="ville_arr" type="text" name="ville_arr" height="18px" width="40"  maxlength="25" required>
+                    </td>
+                </tr>
+            </table>
+<table>
+    <tr><td>date du trajet :</td><td>type de trajet :</td></tr>
+    <tr>
+        <td>
             <input type="date" id="start" name="date"
                    value="${date}" required
                    min="2018-01-01" max="${date}">
-
-            <label>Type de trajet : </label>
+        </td>
+        <td>
             <select name="route" id="route" value="ALLER" required>
                 <option value="ALLER">Aller</option>
                 <option value="RETOUR">Retour</option>
                 <option value="ALLER/RETOUR">Aller/Retour</option>
             </select>
-
+        </td>
+        <td>
             <input type="submit" class="input" id="input_ajout_trajet" value="Ajouter">
+        </td>
+    </tr>
+</table>
         </form>
     </div>
     <div id="compte">
