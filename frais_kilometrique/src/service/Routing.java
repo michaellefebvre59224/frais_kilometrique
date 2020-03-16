@@ -1,29 +1,6 @@
 package service;
-// Maven : Add these dependecies to your pom.xml (java6+)
-//  <dependency>
-//    <groupId>org.glassfish.jersey.core</groupId>
-//    <artifactId>jersey-client</artifactId>
-//    <version>2.27</version>
-//  </dependency>
-//  <dependency>
-//    <groupId>org.glassfish.jersey.inject</groupId>
-//    <artifactId>jersey-hk2</artifactId>
-//    <version>2.28</version>
-//  </dependency>
-//  <dependency>
-//    <groupId>javax.activation</groupId>
-//    <artifactId>activation</artifactId>
-//    <version>1.1.1</version>
-//  </dependency>
-//  <dependency>
-//    <groupId>javax.xml.bind</groupId>
-//    <artifactId>jaxb-api</artifactId>
-//    <version>2.3.1</version>
-//  </dependency>
 
-
-
-
+import modele.FraisDAO;
 import org.json.*;
 
 
@@ -43,16 +20,6 @@ public class Routing implements Serializable{
     public String findCoordoneesAdresse (String numero, String typeRue, String nomRue,int codePostal, String ville, String pays){
         if (numero==null || typeRue==null || nomRue==null || codePostal==0 || ville==null || pays==null) return "ERREUR";
 
-        System.out.println("-------------------------------------find adresse--------------------------------------------");
-        System.out.println("creer et inserer : " + numero);
-        System.out.println("doajouttrajet : " + typeRue);
-        System.out.println("doajouttrajet : " + nomRue);
-        System.out.println("doajouttrajet : " + codePostal);
-        System.out.println("doajouttrajet : " + ville);
-        System.out.println("doajouttrajet : " + pays);
-
-
-
         //remplacement des espace par %20
         numero = numero.replaceAll("\\s","%20");
         nomRue = nomRue.replaceAll("\\s","%20");
@@ -69,10 +36,6 @@ public class Routing implements Serializable{
                 "address="+adresse).request(MediaType.TEXT_PLAIN_TYPE)
                 .header("Accept", "application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8")
                 .get();
-
-        //System.out.println("status: " + response.getStatus());
-        //System.out.println("headers: " + response.getHeaders());
-        //System.out.println("body:" + response.readEntity(String.class));
 
         //recupération du status de la requète
         int status = response.getStatus();

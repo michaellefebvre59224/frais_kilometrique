@@ -21,6 +21,10 @@ import java.sql.SQLException;
 
 @WebServlet("/process")
 public class ControlServlet extends HttpServlet {
+
+
+
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -151,9 +155,9 @@ public class ControlServlet extends HttpServlet {
         FraisDAO dao = FraisDAO.getSingleton();
         String id = request.getParameter("choix");
         int idTrajet = Integer.parseInt(id);
-        System.out.println(idTrajet);
+
         int res = dao.archiveTrajet(idTrajet);
-        System.out.println(res);
+
         HttpSession session = request.getSession();
         Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
         Set<Trajet> trajetsUtilisateur = dao.findTrajetNonArchiveByUtilisateur(utilisateur.getId_utilisateur());
@@ -192,7 +196,7 @@ public class ControlServlet extends HttpServlet {
 
         request.getSession().setAttribute("trajetsUtilisateur", trajetsUtilisateur);
 
-        
+
         String url = "pages/utilisateur_general.jsp";
         forward(url, request, response);
     }

@@ -108,14 +108,23 @@ public class Adresse implements Serializable {
 
     //------------------------------------ C O N S T R U C T E U R -----------------------------------------------------
 
-    public Adresse(String numero, int codePostal, String typeRue, String nomRue, String pays, String ville, String region) {
+    public Adresse(String numero, int codePostal, String typeRue, String nomRue, String pays, String ville) {
         this.setNumero(numero);
         this.setCodePostal(codePostal);
         this.setTypeRue(typeRue);
         this.setNomRue(nomRue);
         this.setPays(pays);
         this.setVille(ville);
-        this.setRegion(region);
+    }
+
+    public Adresse(String numero, int codePostal, String typeRue, String nomRue, String pays, String ville, String coordonnees) {
+        this.setNumero(numero);
+        this.setCodePostal(codePostal);
+        this.setTypeRue(typeRue);
+        this.setNomRue(nomRue);
+        this.setPays(pays);
+        this.setVille(ville);
+        this.setCoordonnees(coordonnees);
     }
 
     public Adresse(int id, int idUtilisateur, String numero, int codePostal,
